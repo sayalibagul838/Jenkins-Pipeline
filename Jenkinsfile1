@@ -78,6 +78,24 @@ pipeline {
                 echo 'This stage runs integration tests on the staging environment to ensure the application functions as expected in a real-world setting.'
                 echo 'Tool: Selenium, Postman'
             }
+            post {
+                success {
+                    emailext(
+                        subject: 'Integration Tests on Staging Succeeded',
+                        to: 'bagulsayali82@gmail.com',
+                        body: 'Integration Tests on Staging passed successfully.',
+                        attachLog: true
+                    )
+                }
+                failure {
+                    emailext(
+                        subject: 'Integration Tests on Staging Failed',
+                        to: 'bagulsayali82@gmail.com',
+                        body: 'The Integration Tests on Staging failed. Please check the attached logs for more information.',
+                        attachLog: true
+                    )
+                }
+            }
         }
 
         stage('Deploy to Production') {
